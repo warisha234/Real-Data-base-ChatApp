@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Interface</title>
+</head>
+<style>
+  body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top left, #000, #050505, #0b0b0b);
+  color: #e0ffe3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.user-setup {
+  background: rgba(10, 20, 10, 0.85);
+  border: 1px solid rgba(0, 255, 102, 0.3);
+  box-shadow: 0 0 25px rgba(0, 255, 102, 0.25);
+  padding: 40px 50px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 380px;
+  width: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.user-setup:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 35px rgba(0, 255, 102, 0.4);
+}
+
+.user-setup h2 {
+  color: #00ff66;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.user-setup p {
+  color: #9affb7;
+  margin-bottom: 25px;
+}
+.user-setup input {
+  width: 100%;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 102, 0.4);
+  color: #e8ffe9;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+.user-setup input:focus {
+  border-color: #00ff66;
+  box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+}
+.user-setup button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px 0;
+  background: #00ff66;
+  color: #000;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+.user-setup button:hover {
+  background: #00cc55;
+  box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+}
+.logout {
+  background: transparent;
+  color: #00ff66;
+  border: 1px solid #00ff66;
+  margin-top: 15px;
+}
+.logout:hover {
+  background: rgba(0, 255, 102, 0.15);
+}
+
+</style>
+<body>
+  <div class="user-setup">
+    <h2>Welcome 👋</h2>
+    <p>Enter your chat name</p>
+    <input type="text" id="username" placeholder="Your name..." />
+    <button id="user-btn">Continue</button>
+    <button id="Logout-btn" class="logout">Logout</button>
+   </div>
+
+  <script type="module" src="app.js"></script> 
+</body>
+</html>
+
+
+
