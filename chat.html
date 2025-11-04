@@ -6,7 +6,7 @@
   <title>Chat App</title>
   <style>
    
-:root {
+ :root {
   --bg: #05060a;
   --card: #071017;
   --neon: #00ff66;
@@ -30,6 +30,10 @@ body {
   align-items: center;
   height: 100vh;
 }
+.main{
+  font-size: 18px;
+  font-family: "Lucida Handwriting";
+}
 
 .chat-container {
   background: var(--card);
@@ -47,7 +51,7 @@ body {
 
 .message-box {
   background: var(--glass);
-  border: 1px solid var(--accent);
+  border: 3px solid var(--accent);
   border-radius: 10px;
   height: 320px;
   overflow-y: auto;
@@ -96,6 +100,7 @@ button:hover {
   color: var(--neon);
   font-size: 0.9rem;
   padding: 6px 12px;
+  margin-top: -45px;
 }
 
 #Logout-btn:hover {
@@ -138,13 +143,16 @@ button:hover {
 }
 
 .message.own .bubble {
-  background: var(--neon);
-  color: black;
+  background-color: rgba(56, 236, 56, 0.1);
+  border: 1px solid #00ff66;
+  box-shadow: 0 0 6px #00ff66;
+  color: white;
   border-radius: 12px 12px 0 12px;
   padding: 8px 12px;
   max-width: 70%;
 }
 
+ 
 
 .timestamp {
   font-size: 0.75rem;
@@ -182,18 +190,114 @@ button:hover {
   box-shadow: 0 0 12px var(--neon), 0 0 20px rgba(0, 0, 0, 0.6);
   transform: translateY(-2px) scale(1.05);
 }
+/* new */
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+#emoji-btn {
+  background: #00ff66;
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+}
 
 
+
+.emoji-picker-container {
+  position: relative;
+}
+
+
+
+
+.emoji-picker {
+  display: none; 
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  background-color: #000;
+  border: 1px solid #00ff66;
+  border-radius: 10px;
+  padding: 10px;
+  max-height: 200px;
+  overflow-y: scroll;
+  width: 200px;
+  box-shadow: 0 0 10px #00ff66;
+}
+
+.emoji-picker span {
+  font-size: 22px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.emoji-picker span:hover {
+  transform: scale(1.3);
+}
+
+
+
+
+#voice-btn:hover {
+  background: var(--neon);
+  color: black;
+  box-shadow: 0 0 10px var(--neon);
+}
+ 
+
+@media screen and (max-width: 480px) {
+  .input-container {
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px;
+  }
+
+  .input-container input {
+    width: 100%;
+  }
+
+  .emoji-picker-container {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  #sendMessage {
+    width: 100%;
+  }
+}
 
   </style>
 </head>
 <body>
-  <div class="chat-container">
-    <button id="Logout-btn">Logout</button>
-    <div id="messages" class="message-box"></div>
+   <div class="chat-container">
+    <h1 class="main">Group Chat</h1>
+  <button id="Logout-btn">Logout</button>
+<button id="clearChats">
+  Clear All Chats <img src="delete icon.png" alt="delete icon" width="16" height="16" />
+</button>
+
+  <div id="messages" class="message-box"></div>
+
+  <div class="input-container">
     <input type="text" id="message" placeholder="Type a message..." />
+
+  <div class="emoji-picker-container">
+  <button id="emoji-btn">😊</button>
+  <button id="voice-btn">🔊</button>
+  <div id="emoji-picker" class="emoji-picker">
+  </div>
+</div>
+
     <button id="sendMessage">Send</button>
   </div>
+</div>
+
+
   <script type="module" src="app.js"></script>
 </body>
 </html>

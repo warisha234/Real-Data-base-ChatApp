@@ -108,12 +108,30 @@ document.getElementById("Logout-btn")?.addEventListener("click", () => {
 
 
 // user name user html
+
 document.getElementById("user-btn")?.addEventListener("click", () => {
   const username = document.getElementById("username").value.trim();
   if (!username) return alert("Please enter a username!");
   localStorage.setItem("username", username);
   window.location.href = "chat.html";
 });
+// clear chats all
+document.getElementById("clearChats")?.addEventListener("click", () => {
+  if (confirm("Are you sure you want to delete all chats? ❌")) {
+    remove(msgRef)
+      .then(() => {
+       
+        const msgContainer = document.getElementById("messages");
+        msgContainer.innerHTML = "";
+        alert("All chats cleared! ✅");
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Error clearing chats: " + err.message);
+      });
+  }
+});
+
 
 // add delete edit functions
 const username = localStorage.getItem("username");
@@ -168,20 +186,33 @@ function showMessage(id, data) {
 
   //edit & delete buttons
   if (isMyMsg) {
-    const actions = document.createElement("div");
-    actions.classList.add("actions");
+  const actions = document.createElement("div");
+  actions.classList.add("actions");
 
-    const editBtn = document.createElement("button");
-    editBtn.textContent = "🖋️";
-    editBtn.onclick = () => editMessage(id, safeText);
+  // Edit Button 
+  const editBtn = document.createElement("button");
+  const editIcon = document.createElement("img");
+  editIcon.src = "edit icon.png"; 
+  editIcon.alt = "Edit";
+  editIcon.style.width = "20px";
+  editIcon.style.height = "20px";
+  editBtn.appendChild(editIcon);
+  editBtn.onclick = () => editMessage(id, safeText);
 
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "🗑️";
-    deleteBtn.onclick = () => deleteMessage(id);
+  //  Delete Button 
+  const deleteBtn = document.createElement("button");
+  const deleteIcon = document.createElement("img");
+  deleteIcon.src = "delete icon.png"; 
+  deleteIcon.alt = "Delete";
+  deleteIcon.style.width = "20px";
+  deleteIcon.style.height = "20px";
+  deleteBtn.appendChild(deleteIcon);
+  deleteBtn.onclick = () => deleteMessage(id);
 
-    actions.append(editBtn, deleteBtn);
-    bubble.appendChild(actions);
-  }
+  actions.append(editBtn, deleteBtn);
+  bubble.appendChild(actions);
+}
+
 
   //time setting
   const timestamp = document.createElement("div");
@@ -213,24 +244,168 @@ window.deleteMessage = (id) => {
   if (confirm("Delete this message?")) remove(ref(db, "messages/" + id));
 };
 
-// edit k bd msg
+// Edit ke baad message update hone par bhi icons intact rahenge
 function updateMessage(id, data) {
   const msgDiv = document.querySelector(`[data-id="${id}"] .bubble`);
   if (msgDiv) {
     const safeText = data.text.replace(/[<>]/g, "");
-    msgDiv.innerHTML = `
-      ${safeText}
-      ${
-        data.name === username
-          ? `
-        <div class="actions">
-          <button onclick="editMessage('${id}', '${safeText.replace(/'/g, "\\'")}')">✏️</button>
-          <button onclick="deleteMessage('${id}')">🗑️</button>
-        </div>` : ""
-      }
-    `;
+    msgDiv.innerHTML = `${safeText}`;
+
+
+    if (data.name === username) {
+      const actions = document.createElement("div");
+      actions.classList.add("actions");
+
+      //  Edit button with icon
+      const editBtn = document.createElement("button");
+      const editIcon = document.createElement("img");
+      editIcon.src = "edit icon.png"; // path to your edit icon
+      editIcon.alt = "Edit";
+      editIcon.style.width = "20px";
+      editIcon.style.height = "20px";
+      editBtn.appendChild(editIcon);
+      editBtn.onclick = () => editMessage(id, safeText);
+
+      // Delete button with icon
+      const deleteBtn = document.createElement("button");
+      const deleteIcon = document.createElement("img");
+      deleteIcon.src = "delete icon.png"; // path to your delete icon
+      deleteIcon.alt = "Delete";
+      deleteIcon.style.width = "20px";
+      deleteIcon.style.height = "20px";
+      deleteBtn.appendChild(deleteIcon);
+      deleteBtn.onclick = () => deleteMessage(id);
+
+      actions.append(editBtn, deleteBtn);
+      msgDiv.appendChild(actions);
+    }
   }
 }
+// for recording audio
+const voiceBtn = document.getElementById("voice-btn");
+const messageBox = document.getElementById("messages");
+
+let mediaRecorder;
+let audioChunks = [];
+let isRecording = false;
+
+voiceBtn.addEventListener("click", async () => {
+  if (!isRecording) {
+    try {
+      // Start Recording
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+
+      audioChunks = [];
+      mediaRecorder.start();
+      isRecording = true;
+      voiceBtn.textContent = "⏹";
+
+      mediaRecorder.addEventListener("dataavailable", (event) => {
+        audioChunks.push(event.data);
+      });
+
+      mediaRecorder.addEventListener("stop", () => {
+        const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
+        const audioURL = URL.createObjectURL(audioBlob);
+        const bubble = document.createElement("div");
+        bubble.classList.add("message", "own");
+
+        const innerBubble = document.createElement("div");
+        innerBubble.classList.add("bubble");
+
+    
+        const audioElement = document.createElement("audio");
+        audioElement.src = audioURL;
+        audioElement.controls = true;
+        audioElement.style.width = "150px";
+
+        //  Delete Button
+        const deleteBtn = document.createElement("button");
+        const deleteIcon = document.createElement("img");
+        deleteIcon.src = "delete icon.png"; 
+        deleteIcon.alt = "Delete";
+        deleteIcon.style.width = "20px";
+        deleteIcon.style.height = "20px";
+        deleteBtn.appendChild(deleteIcon);
+        deleteBtn.style.background = "transparent";
+        deleteBtn.style.border = "none";
+        deleteBtn.style.cursor = "pointer";
+        deleteBtn.style.marginLeft = "8px";
+
+        deleteBtn.onclick = () => {
+          bubble.remove(); 
+        };
+
+        innerBubble.append(audioElement, deleteBtn);
+        bubble.appendChild(innerBubble);
+        messageBox.appendChild(bubble);
+
+      //  scroll k liye
+        messageBox.scrollTop = messageBox.scrollHeight;
+      });
+    } catch (error) {
+      alert("Microphone permission denied or not supported 😞");
+      console.error(error);
+    }
+  } else {
+    mediaRecorder.stop();
+    isRecording = false;
+    voiceBtn.textContent = "▶";
+  }
+});
+
+  // emoji select
+document.addEventListener("DOMContentLoaded", () => {
+  const emojiBtn = document.getElementById("emoji-btn");
+  const emojiPicker = document.getElementById("emoji-picker");
+  const messageInput = document.getElementById("message");
+
+  if (!emojiBtn || !emojiPicker || !messageInput) {
+    console.error("❌ Emoji elements not found. Check HTML IDs.");
+    return;
+  }
+  const emojis = [
+  "😀", "😁", "😂", "🤣", "😅", "😊", "😍", "😘", "😎", "😇", "🥰", "🤗",
+  "😢", "😭", "😡", "😤", "😱", "😴", "🤔", "😐", "🙄", "😬", "🤨", "🤩",
+  "👍", "👎", "👏", "🙌", "🤝", "🙏", "🔥", "✨", "🌟", "💫", "💥", "💯",
+  "❤️", "🩷", "🧡", "💛", "💚", "💙", "💜", "🖤", "🤍", "🤎",
+  "📩", "🗝️", "📞", "💬", "🎧", "🎵", "🎶", "🎤", "🎁", "🎂",
+  "🍕", "🍔", "🍟", "🍩", "🍫", "☕", "🍹", "🍓", "🍎", "🍊",
+  "🐶", "🐱", "🐰", "🐼", "🐻", "🐥", "🦋", "🌸", "🌼", "🌻",
+  "☀️", "🌙", "⭐", "🌈", "☁️", "⚡", "❄️", "🌧️", "🌊", "🔥",
+  "✈️", "🚗", "🚀", "🏠", "🕹️", "💻", "📱", "🖋️", "📚", "💡"
+];
+
+  emojiPicker.innerHTML = "";
+  emojis.forEach((emoji) => {
+    const span = document.createElement("span");
+    span.textContent = emoji;
+    span.style.cursor = "pointer";
+    span.style.fontSize = "22px";
+    span.style.margin = "5px";
+    span.addEventListener("click", () => {
+      messageInput.value += emoji;
+      emojiPicker.style.display = "none";
+    });
+    emojiPicker.appendChild(span);
+  });
+
+  emojiBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    emojiPicker.style.display =
+      emojiPicker.style.display === "block" ? "none" : "block";
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!emojiPicker.contains(e.target) && e.target !== emojiBtn) {
+      emojiPicker.style.display = "none";
+    }
+  });
+});
+
+
+
 
 
 document.addEventListener("keydown", (event) => {
