@@ -6,7 +6,7 @@
   <title>Chat App</title>
   <style>
    
- :root {
+    :root {
   --bg: #05060a;
   --card: #071017;
   --neon: #00ff66;
@@ -241,6 +241,56 @@ button:hover {
 }
 
 
+/* Wallpaper popup box */
+.wallpaper-popup {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid #00ff66;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 0 15px #00ff66;
+  z-index: 1000;
+  width: 320px;
+  text-align: center;
+}
+
+
+.wallpaper-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+
+.wallpaper-options img {
+  width: 90px;
+  height: 60px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  object-fit: cover;
+}
+
+.wallpaper-options img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px #00ff66;
+}
+#wallpaper-btn{
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 90px;
+}
+#wallpaper-btn img{
+  width: 24px;
+  height: 24px;
+}
 
 
 #voice-btn:hover {
@@ -248,7 +298,13 @@ button:hover {
   color: black;
   box-shadow: 0 0 10px var(--neon);
 }
- 
+
+ #voice-btn img{
+  width: 20px;
+  height: 15px;
+ }
+
+
 
 @media screen and (max-width: 480px) {
   .input-container {
@@ -274,28 +330,47 @@ button:hover {
   </style>
 </head>
 <body>
-   <div class="chat-container">
+  <div class="chat-container" id="chatContainer">
     <h1 class="main">Group Chat</h1>
-  <button id="Logout-btn">Logout</button>
-<button id="clearChats">
-  Clear All Chats <img src="delete icon.png" alt="delete icon" width="16" height="16" />
-</button>
 
-  <div id="messages" class="message-box"></div>
+    <div class="top-actions">
+      <button id="Logout-btn">Logout</button>
+      <button id="wallpaper-btn"><img src="wallpaper/wallpaper-icon.png" alt="icon"></button>
+    </div>
 
-  <div class="input-container">
-    <input type="text" id="message" placeholder="Type a message..." />
+    <button id="clearChats">
+      Clear All Chats <img src="delete icon.png" alt="delete icon" width="16" height="16" />
+    </button>
 
-  <div class="emoji-picker-container">
-  <button id="emoji-btn">😊</button>
-  <button id="voice-btn">🔊</button>
-  <div id="emoji-picker" class="emoji-picker">
+    <div id="messages" class="message-box"></div>
+
+    <div class="input-container">
+      <input type="text" id="message" placeholder="Type a message..." />
+      <div class="emoji-picker-container">
+        <button id="emoji-btn">😊</button>
+        <button id="voice-btn">	▶</button>
+        <div id="emoji-picker" class="emoji-picker"></div>
+      </div>
+      <button id="sendMessage">Send</button>
+    </div>
   </div>
-</div>
 
-    <button id="sendMessage">Send</button>
+
+  <div class="wallpaper-popup" id="wallpaperPopup">
+    <h3>Choose Wallpaper</h3>
+    <div class="wallpaper-options">
+      <img src="wallpaper/w1.jpg" alt="Wallpaper 1">
+      <img src="wallpaper/w2.jpg" alt="Wallpaper 2">
+      <img src="wallpaper/w3.jpg" alt="Wallpaper 3">
+      <img src="wallpaper/w4.jpg" alt="Wallpaper 4">
+      <img src="wallpaper/w5.jpg" alt="Wallpaper 5">
+      <img src="wallpaper/w6.jpg" alt="Wallpaper 6">
+       <img src="wallpaper/w7.jpg" alt="Wallpaper 7">
+      <img src="wallpaper/w8.jpg" alt="Wallpaper 8">
+       <img src="wallpaper/w9.jpg" alt="Wallpaper 9">
+    </div>
   </div>
-</div>
+ 
 
 
   <script type="module" src="app.js"></script>

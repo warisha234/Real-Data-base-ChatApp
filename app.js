@@ -115,6 +115,27 @@ document.getElementById("user-btn")?.addEventListener("click", () => {
   localStorage.setItem("username", username);
   window.location.href = "chat.html";
 });
+
+// wallpaper add krna
+   const wallpaperBtn = document.getElementById("wallpaper-btn");
+    const wallpaperPopup = document.getElementById("wallpaperPopup");
+    const chatContainer = document.getElementById("chatContainer");
+    chatContainer.style.backgroundSize = "cover";
+chatContainer.style.backgroundPosition = "center";
+chatContainer.style.backgroundRepeat = "no-repeat";
+
+    wallpaperBtn.addEventListener("click", () => {
+      wallpaperPopup.style.display = 
+        wallpaperPopup.style.display === "block" ? "none" : "block";
+    });
+
+
+    document.querySelectorAll(".wallpaper-options img").forEach(img => {
+      img.addEventListener("click", () => {
+        chatContainer.style.backgroundImage = `url('${img.src}')`;
+        wallpaperPopup.style.display = "none";
+      });
+    });
 // clear chats all
 document.getElementById("clearChats")?.addEventListener("click", () => {
   if (confirm("Are you sure you want to delete all chats? ❌")) {
