@@ -1,37 +1,62 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>User Interface</title>
-</head>
-<style>
-  body {
+  <style>
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
-  background: radial-gradient(circle at top left, #000, #050505, #0b0b0b);
-  color: #e0ffe3;
+}
+
+body {
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  background: radial-gradient(circle at top left, #000, #050505, #0b0b0b);
+  color: #e0ffe3;
 }
+
+
+.container {
+  display: flex;
+  width: 90%;
+  max-width: 1000px;
+  height: 500px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 40px rgba(0, 255, 102, 0.25);
+  position: relative;
+}
+
+.user-side {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
 .user-setup {
   background: rgba(10, 20, 10, 0.85);
   border: 1px solid rgba(0, 255, 102, 0.3);
-  box-shadow: 0 0 25px rgba(0, 255, 102, 0.25);
-  padding: 40px 50px;
+  box-shadow: 0 0 30px rgba(0, 255, 102, 0.25);
+  padding: 40px 30px;
   border-radius: 20px;
   text-align: center;
-  max-width: 380px;
   width: 100%;
+  max-width: 350px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .user-setup:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0 35px rgba(0, 255, 102, 0.4);
+  transform: translateY(-6px);
+  box-shadow: 0 0 50px rgba(0, 255, 102, 0.4);
 }
 
 .user-setup h2 {
@@ -43,8 +68,9 @@
 
 .user-setup p {
   color: #9affb7;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
+
 .user-setup input {
   width: 100%;
   padding: 12px 15px;
@@ -55,13 +81,15 @@
   font-size: 1rem;
   outline: none;
   transition: border 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 15px;
 }
+
 .user-setup input:focus {
   border-color: #00ff66;
-  box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+  box-shadow: 0 0 12px rgba(0, 255, 102, 0.3);
 }
+
 .user-setup button {
-  margin-top: 20px;
   width: 100%;
   padding: 12px 0;
   background: #00ff66;
@@ -71,35 +99,128 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  margin-bottom: 10px;
 }
+
 .user-setup button:hover {
   background: #00cc55;
-  box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+  box-shadow: 0 0 20px rgba(0, 255, 102, 0.4);
+  transform: translateY(-2px);
 }
+
 .logout {
   background: transparent;
   color: #00ff66;
   border: 1px solid #00ff66;
-  margin-top: 15px;
 }
+
 .logout:hover {
   background: rgba(0, 255, 102, 0.15);
 }
 
-</style>
+.image-side {
+  flex: 1;
+  position: relative;
+  display: flex;
+  justify-content: flex-end; 
+  align-items: flex-start;
+  padding: 40px 20px 40px 40px; 
+}
+
+
+.girl {
+  position: absolute;
+  top: 40px;
+  right: 270px; 
+  max-width: 180px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 255, 102, 0.4);
+  z-index: 2; /* girl in front */
+  transform: rotate(-3deg);
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  animation: floatGirl 4s ease-in-out infinite;
+}
+
+
+.boy {
+  position: absolute;
+  top: 180px;
+  right: 100px; 
+  max-width: 180px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 255, 102, 0.4);
+  z-index: 1; 
+  transform: rotate(2deg);
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  animation: floatBoy 4s ease-in-out infinite;
+}
+
+@keyframes floatGirl {
+  0% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-10px) rotate(-3deg); }
+  100% { transform: translateY(0) rotate(-3deg); }
+}
+
+@keyframes floatBoy {
+  0% { transform: translateY(0) rotate(2deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+  100% { transform: translateY(0) rotate(2deg); }
+}
+
+.image-side img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 20px 50px rgba(0, 255, 102, 0.5);
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column-reverse;
+    height: auto;
+    width: 90%;
+  }
+
+  .image-side {
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    height: 250px;
+  }
+
+  .image-side img {
+    position: static;
+    max-width: 140px;
+    margin: 0 15px;
+    animation: none;
+  }
+
+  .user-side {
+    padding: 20px;
+  }
+}
+
+
+  </style>
+</head>
 <body>
-  <div class="user-setup">
-    <h2>Welcome 👋</h2>
-    <p>Enter your chat name</p>
-    <input type="text" id="username" placeholder="Your name..." />
-    <button id="user-btn">Continue</button>
-    <button id="Logout-btn" class="logout">Logout</button>
-   </div>
+
+  <div class="container">
+    <div class="user-side">
+      <div class="user-setup">
+        <h2>Welcome 👋</h2>
+        <p>Enter your chat name</p>
+        <input type="text" id="username" placeholder="Your name..." />
+        <button id="user-btn">Continue</button>
+        <button id="Logout-btn" class="logout">Logout</button>
+      </div>
+    </div>
+
+    <div class="image-side">
+      <img src="user-imggirl-removebg-preview.png" alt="Girl 3D" class="girl" />
+      <img src="user-imgboy-removebg-preview.png" alt="Boy 3D" class="boy" />
+    </div>
+  </div>
 
   <script type="module" src="app.js"></script> 
 </body>
 </html>
-
-
-
