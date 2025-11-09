@@ -51,7 +51,8 @@ document.getElementById("signup-btn")?.addEventListener("click", () => {
 
   createUserWithEmailAndPassword(auth, email, password)
     .then(() => {
-      alert("Sign Up Successful!");
+      alert("Signup Successful! 🎉");
+
       window.location.href = "user.html";
     })
     .catch((err) => alert("Error: " + err.message));
@@ -71,7 +72,8 @@ document.getElementById("login-btn")?.addEventListener("click", () => {
 
   signInWithEmailAndPassword(auth, email, password)
     .then(() => {
-      alert("Login Successful! ✅");
+      alert("Login Successful! 🎉");
+
       window.location.href = "user.html";
     })
     .catch((err) => {
